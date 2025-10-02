@@ -1,0 +1,16 @@
+# Bazel configuration for client-server application
+
+# Use C++17 standard
+build --cxxopt=-std=c++17
+
+# Enable compiler warnings
+build --cxxopt=-Wall
+build --cxxopt=-Wextra
+
+# Optimization settings
+build:opt --compilation_mode=opt
+build:dbg --compilation_mode=dbg
+
+# Oracle support configuration
+# To build with Oracle, use: bazel build --config=oracle ...
+build:oracle --define oracle=true
