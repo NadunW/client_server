@@ -1,4 +1,0 @@
-/home/runner/work/client_server/client_server/build/CMakeFiles/server.dir
-/home/runner/work/client_server/client_server/build/CMakeFiles/client.dir
-/home/runner/work/client_server/client_server/build/CMakeFiles/edit_cache.dir
-/home/runner/work/client_server/client_server/build/CMakeFiles/rebuild_cache.dir
