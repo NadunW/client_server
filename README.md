@@ -40,7 +40,7 @@ The application prevents SQL injection through several mechanisms:
 
 ### Required
 - C++17 compatible compiler (g++ 7.0+ or clang++ 5.0+)
-- CMake 3.10 or higher
+- Bazel 5.0 or higher
 - POSIX-compliant system (Linux, macOS, or Unix-like)
 
 ### Optional (for Oracle Database)
@@ -52,24 +52,24 @@ The application prevents SQL injection through several mechanisms:
 
 ### Without Oracle Support (Mock Database)
 ```bash
-mkdir build
-cd build
-cmake ..
-make
+bazel build //:server //:client
 ```
 
 ### With Oracle Support
 ```bash
+# Set ORACLE_HOME to point to Oracle Instant Client
 export ORACLE_HOME=/path/to/oracle/instantclient
-mkdir build
-cd build
-cmake ..
-make
+
+# Build with Oracle support enabled (using .bazelrc config)
+bazel build --config=oracle //:server //:client \
+  --action_env=ORACLE_HOME=$ORACLE_HOME \
+  --linkopt=-L$ORACLE_HOME/lib \
+  --copt=-I$ORACLE_HOME/include
 ```
 
 This creates two executables:
-- `build/server` - Backend server application
-- `build/client` - Frontend client application
+- `bazel-bin/server` - Backend server application
+- `bazel-bin/client` - Frontend client application
 
 ## Running the Applications
 
@@ -77,7 +77,7 @@ This creates two executables:
 
 **Without Oracle (Mock Mode):**
 ```bash
-./build/server [port]
+./bazel-bin/server [port]
 ```
 
 **With Oracle Database:**
@@ -85,7 +85,7 @@ This creates two executables:
 export DB_USER=your_username
 export DB_PASS=your_password
 export DB_CONN_STRING=your_connection_string
-./build/server [port]
+./bazel-bin/server [port]
 ```
 
 Default port is 8080.
@@ -97,7 +97,7 @@ Example connection strings:
 ### Start the Client
 
 ```bash
-./build/client [host] [port]
+./bazel-bin/client [host] [port]
 ```
 
 Default: `127.0.0.1` port `8080`
@@ -226,7 +226,7 @@ case 6: // QUERY_NEW_FEATURE
 
 ### Server won't start
 - Check if port is already in use: `netstat -an | grep 8080`
-- Try a different port: `./build/server 9090`
+- Try a different port: `./bazel-bin/server 9090`
 
 ### Client can't connect
 - Verify server is running
@@ -248,7 +248,8 @@ case 6: // QUERY_NEW_FEATURE
 
 ```
 client_server/
-├── CMakeLists.txt          # Build configuration
+├── WORKSPACE                # Bazel workspace configuration
+├── BUILD                    # Bazel build configuration
 ├── README.md               # This file
 ├── include/                # Header files
 │   ├── database.h         # Database abstraction layer

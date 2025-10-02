@@ -3,6 +3,9 @@ build/
 bin/
 obj/
 
+# Bazel build directories
+bazel-*
+
 # Compiled Object files
 *.o
 *.obj
